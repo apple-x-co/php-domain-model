@@ -83,7 +83,7 @@ class RewardTest extends TestCase
             ),
             new EarnedPoint(
                 UuidProvider::get(),
-                'xxx-3',
+                UuidProvider::get(),
                 $now,
                 $now->modify('-1 sec'),
                 50,

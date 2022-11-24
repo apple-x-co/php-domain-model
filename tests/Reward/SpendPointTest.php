@@ -12,8 +12,8 @@ class SpendPointTest extends TestCase
     public function testAvailableFalse(): void
     {
         $spendPoint = new SpendPoint(
-            'xxx',
-            'xxx',
+            UuidProvider::get(),
+            UuidProvider::get(),
             new DateTimeImmutable(),
             (new DateTimeImmutable())->modify('+1 year')->setTime(0, 0),
             100,

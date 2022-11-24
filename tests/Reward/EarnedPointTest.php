@@ -12,8 +12,8 @@ class EarnedPointTest extends TestCase
     public function testAvailableTrue(): void
     {
         $earnedPoint = new EarnedPoint(
-            'xxx',
-            'xxx',
+            UuidProvider::get(),
+            UuidProvider::get(),
             new DateTimeImmutable(),
             (new DateTimeImmutable())->modify('+1 year')->setTime(0, 0),
             100,
@@ -26,8 +26,8 @@ class EarnedPointTest extends TestCase
     public function testAvailableFalse1(): void
     {
         $earnedPoint = new EarnedPoint(
-            'xxx',
-            'xxx',
+            UuidProvider::get(),
+            UuidProvider::get(),
             new DateTimeImmutable(),
             (new DateTimeImmutable())->modify('+1 year')->setTime(0, 0),
             0,
@@ -40,8 +40,8 @@ class EarnedPointTest extends TestCase
     public function testAvailableFalse2(): void
     {
         $earnedPoint = new EarnedPoint(
-            'xxx',
-            'xxx',
+            UuidProvider::get(),
+            UuidProvider::get(),
             new DateTimeImmutable(),
             (new DateTimeImmutable())->modify('-1 sec'),
             100,
