@@ -1,4 +1,5 @@
 {
+    "name": "apple-x-co/php-domain-model",
     "type": "library",
     "minimum-stability": "dev",
     "autoload": {
@@ -7,6 +8,13 @@
         }
     },
     "require": {
-        "php" : ">=7.2"
+        "php": ">=7.2 || ^8.0",
+        "ramsey/uuid": "^4.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "scripts": {
+        "test": "phpunit tests"
     }
 }
