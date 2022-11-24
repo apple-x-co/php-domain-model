@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Domain\ValueObject;
 
-use Domain\Exception\StringTypeException;
+use Domain\Exception\IntegerTypeException;
 use Domain\ValueObjectInterface;
 
-trait StringTrait
+trait IntegerTrait
 {
-    /** @var string */
-    protected $string;
+    /** @var int */
+    protected $integer;
 
-    public function __construct(string $string)
+    public function __construct(int $integer)
     {
-        $this->string = $string;
+        $this->integer = $integer;
     }
 
     public function isNull(): bool
     {
-        return $this->string === null;
+        return $this->integer === null;
     }
 
     public function isSame(ValueObjectInterface $valueObject): bool
@@ -29,15 +29,15 @@ trait StringTrait
 
     public static function fromPrimitive($primitive): self
     {
-        if (! is_string($primitive)) {
-            throw new StringTypeException('Can only instantiate this object with a string.');
+        if (! is_int($primitive)) {
+            throw new IntegerTypeException('Can only instantiate this object with a integer.');
         }
 
         return new self($primitive);
     }
 
-    public function toPrimitive(): string
+    public function toPrimitive(): int
     {
-        return $this->string;
+        return $this->integer;
     }
 }

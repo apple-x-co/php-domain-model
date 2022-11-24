@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Domain\ValueObject;
 
-use Domain\Exception\StringTypeException;
+use Domain\Exception\FloatTypeException;
 use Domain\ValueObjectInterface;
 
-trait StringTrait
+trait FloatTrait
 {
-    /** @var string */
-    protected $string;
+    /** @var int */
+    protected $float;
 
-    public function __construct(string $string)
+    public function __construct(float $float)
     {
-        $this->string = $string;
+        $this->float = $float;
     }
 
     public function isNull(): bool
     {
-        return $this->string === null;
+        return $this->float === null;
     }
 
     public function isSame(ValueObjectInterface $valueObject): bool
@@ -29,15 +29,15 @@ trait StringTrait
 
     public static function fromPrimitive($primitive): self
     {
-        if (! is_string($primitive)) {
-            throw new StringTypeException('Can only instantiate this object with a string.');
+        if (! is_float($primitive)) {
+            throw new FloatTypeException('Can only instantiate this object with a float.');
         }
 
         return new self($primitive);
     }
 
-    public function toPrimitive(): string
+    public function toPrimitive(): int
     {
-        return $this->string;
+        return $this->float;
     }
 }
