@@ -6,7 +6,7 @@ namespace Domain\Reward;
 
 use DateTimeImmutable;
 
-class SpendPoint implements PointInterface
+class SpendingPoint implements PointInterface
 {
     /** @var string */
     private $transactionId;
@@ -67,12 +67,13 @@ class SpendPoint implements PointInterface
         PointStatus $status,
         ?DateTimeImmutable $invalidationAt,
         ?string $invalidationReason
-    ): self {
-        $spendPoint = new self($transactionId, $pointId, $pointAt, $expiresAt, $amount, $status);
-        $spendPoint->invalidationAt = $invalidationAt;
-        $spendPoint->invalidationReason = $invalidationReason;
+    ): self
+    {
+        $spendingPoint = new self($transactionId, $pointId, $pointAt, $expiresAt, $amount, $status);
+        $spendingPoint->invalidationAt = $invalidationAt;
+        $spendingPoint->invalidationReason = $invalidationReason;
 
-        return $spendPoint;
+        return $spendingPoint;
     }
 
     public function getTransactionId(): string

@@ -7,11 +7,11 @@ namespace Domain\Reward;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
-class EarnedPointTest extends TestCase
+class EarningPointTest extends TestCase
 {
     public function testAvailableTrue(): void
     {
-        $earnedPoint = new EarnedPoint(
+        $earningPoint = new EarningPoint(
             UuidProvider::get(),
             UuidProvider::get(),
             new DateTimeImmutable(),
@@ -20,12 +20,12 @@ class EarnedPointTest extends TestCase
             PointStatus::open()
         );
 
-        $this->assertTrue($earnedPoint->isAvailable());
+        $this->assertTrue($earningPoint->isAvailable());
     }
 
     public function testAvailableFalse1(): void
     {
-        $earnedPoint = new EarnedPoint(
+        $earningPoint = new EarningPoint(
             UuidProvider::get(),
             UuidProvider::get(),
             new DateTimeImmutable(),
@@ -34,12 +34,12 @@ class EarnedPointTest extends TestCase
             PointStatus::open()
         );
 
-        $this->assertFalse($earnedPoint->isAvailable());
+        $this->assertFalse($earningPoint->isAvailable());
     }
 
     public function testAvailableFalse2(): void
     {
-        $earnedPoint = new EarnedPoint(
+        $earningPoint = new EarningPoint(
             UuidProvider::get(),
             UuidProvider::get(),
             new DateTimeImmutable(),
@@ -48,6 +48,6 @@ class EarnedPointTest extends TestCase
             PointStatus::open()
         );
 
-        $this->assertFalse($earnedPoint->isAvailable());
+        $this->assertFalse($earningPoint->isAvailable());
     }
 }

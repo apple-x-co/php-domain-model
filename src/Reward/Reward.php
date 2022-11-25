@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Domain\Reward;
 
 use DateTimeImmutable;
-use Domain\Exception\RewardOverSpendException;
+use Domain\Exception\RewardSpendingOverException;
 
 class Reward
 {
@@ -39,7 +39,7 @@ class Reward
     public function earn(int $amount, DateTimeImmutable $expiresAt, PointStatus $status): self
     {
         $clone = clone $this;
-        $clone->points[] = new EarnedPoint(
+        $clone->points[] = new EarningPoint(
             UuidProvider::get(),
             UuidProvider::get(),
             new DateTimeImmutable(),
@@ -57,25 +57,25 @@ class Reward
 
         $totalAmount = $clone->calculateTotalAmount();
         if ($totalAmount < $amount) {
-            throw new RewardOverSpendException();
+            throw new RewardSpendingOverException();
         }
 
         $transactionId = UuidProvider::get();
 
-        $spendAmount = $amount;
+        $spendingAmount = $amount;
         $addPoints = [];
         foreach ($clone->points as &$point) {
-            if ($point instanceof EarnedPoint) {
+            if ($point instanceof EarningPoint) {
                 $amount = 0;
-                if ($point->getRemainingAmount() >= $spendAmount) {
-                    $amount = $spendAmount;
+                if ($point->getRemainingAmount() >= $spendingAmount) {
+                    $amount = $spendingAmount;
                 } else {
                     $amount = $point->getRemainingAmount();
                 }
 
-                $spendAmount -= $amount;
+                $spendingAmount -= $amount;
 
-                $addPoints[] = new SpendPoint(
+                $addPoints[] = new SpendingPoint(
                     $transactionId,
                     $point->getPointId(),
                     new DateTimeImmutable(),
@@ -87,7 +87,7 @@ class Reward
                 $point = $point->useAmount($amount);
             }
 
-            if ($spendAmount === 0) {
+            if ($spendingAmount === 0) {
                 break;
             }
         }

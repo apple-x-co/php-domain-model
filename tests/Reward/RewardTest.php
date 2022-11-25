@@ -21,7 +21,7 @@ class RewardTest extends TestCase
         $now = new DateTimeImmutable();
 
         $reward = new Reward([
-            new EarnedPoint(
+            new EarningPoint(
                 UuidProvider::get(),
                 UuidProvider::get(),
                 $now,
@@ -39,7 +39,7 @@ class RewardTest extends TestCase
         $now = new DateTimeImmutable();
 
         $reward = new Reward([
-            new EarnedPoint(
+            new EarningPoint(
                 UuidProvider::get(),
                 UuidProvider::get(),
                 $now,
@@ -47,7 +47,7 @@ class RewardTest extends TestCase
                 100,
                 PointStatus::open()
             ),
-            new EarnedPoint(
+            new EarningPoint(
                 UuidProvider::get(),
                 UuidProvider::get(),
                 $now,
@@ -65,7 +65,7 @@ class RewardTest extends TestCase
         $now = new DateTimeImmutable();
 
         $reward = new Reward([
-            new EarnedPoint(
+            new EarningPoint(
                 UuidProvider::get(),
                 UuidProvider::get(),
                 $now,
@@ -73,7 +73,7 @@ class RewardTest extends TestCase
                 200,
                 PointStatus::open()
             ),
-            new EarnedPoint(
+            new EarningPoint(
                 UuidProvider::get(),
                 UuidProvider::get(),
                 $now,
@@ -81,7 +81,7 @@ class RewardTest extends TestCase
                 50,
                 PointStatus::open()
             ),
-            new EarnedPoint(
+            new EarningPoint(
                 UuidProvider::get(),
                 UuidProvider::get(),
                 $now,
@@ -99,7 +99,7 @@ class RewardTest extends TestCase
         $now = new DateTimeImmutable();
 
         $reward = new Reward([
-            new EarnedPoint(
+            new EarningPoint(
                 UuidProvider::get(),
                 UuidProvider::get(),
                 $now,
@@ -107,7 +107,7 @@ class RewardTest extends TestCase
                 200,
                 PointStatus::open()
             ),
-            new EarnedPoint(
+            new EarningPoint(
                 UuidProvider::get(),
                 UuidProvider::get(),
                 $now,
@@ -115,7 +115,7 @@ class RewardTest extends TestCase
                 50,
                 PointStatus::open()
             ),
-            new EarnedPoint(
+            new EarningPoint(
                 UuidProvider::get(),
                 UuidProvider::get(),
                 $now,

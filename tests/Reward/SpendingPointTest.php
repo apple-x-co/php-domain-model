@@ -7,11 +7,11 @@ namespace Domain\Reward;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
-class SpendPointTest extends TestCase
+class SpendingPointTest extends TestCase
 {
     public function testAvailableFalse(): void
     {
-        $spendPoint = new SpendPoint(
+        $spendingPoint = new SpendingPoint(
             UuidProvider::get(),
             UuidProvider::get(),
             new DateTimeImmutable(),
@@ -20,6 +20,6 @@ class SpendPointTest extends TestCase
             PointStatus::open()
         );
 
-        $this->assertFalse($spendPoint->isAvailable());
+        $this->assertFalse($spendingPoint->isAvailable());
     }
 }
