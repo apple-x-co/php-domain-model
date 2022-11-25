@@ -36,9 +36,10 @@ class Reward
         return $totalAmount;
     }
 
-    public function earn(int $amount, DateTimeImmutable $expiresAt, PointStatus $status): void
+    public function earn(int $amount, DateTimeImmutable $expiresAt, PointStatus $status): self
     {
-        $earnedPoint = new EarnedPoint(
+        $clone = clone $this;
+        $clone->points[] = new EarnedPoint(
             UuidProvider::get(),
             UuidProvider::get(),
             new DateTimeImmutable(),
@@ -47,12 +48,14 @@ class Reward
             $status
         );
 
-        $this->points[] = $earnedPoint;
+        return $clone;
     }
 
-    public function spend(int $amount): void
+    public function spend(int $amount): self
     {
-        $totalAmount = $this->calculateTotalAmount();
+        $clone = clone $this;
+
+        $totalAmount = $clone->calculateTotalAmount();
         if ($totalAmount < $amount) {
             throw new RewardOverSpendException();
         }
@@ -60,8 +63,8 @@ class Reward
         $transactionId = UuidProvider::get();
 
         $spendAmount = $amount;
-        $spendPoints = [];
-        foreach ($this->points as $point) {
+        $addPoints = [];
+        foreach ($clone->points as &$point) {
             if ($point instanceof EarnedPoint) {
                 $amount = 0;
                 if ($point->getRemainingAmount() >= $spendAmount) {
@@ -72,7 +75,7 @@ class Reward
 
                 $spendAmount -= $amount;
 
-                $spendPoints[] = new SpendPoint(
+                $addPoints[] = new SpendPoint(
                     $transactionId,
                     $point->getPointId(),
                     new DateTimeImmutable(),
@@ -81,19 +84,18 @@ class Reward
                     PointStatus::open()
                 );
 
-                $point->useAmount($amount);
+                $point = $point->useAmount($amount);
             }
 
             if ($spendAmount === 0) {
                 break;
             }
         }
+        unset($point);
 
-        if (empty($spendPoints)) {
-            return;
-        }
+        $clone->points = array_merge($clone->points, $addPoints);
 
-        $this->points = array_merge($this->points, $spendPoints);
+        return $clone;
     }
 
 //    public function invalidate(PointInterface $point): void

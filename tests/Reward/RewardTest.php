@@ -132,8 +132,8 @@ class RewardTest extends TestCase
     {
         $now = new DateTimeImmutable();
 
-        $reward = new Reward([]);
-        $reward->earn(111, $now->modify('+1 minute'), PointStatus::open());
+        $reward = (new Reward([]))
+            ->earn(111, $now->modify('+1 minute'), PointStatus::open());
 
         $this->assertEquals(111, $reward->calculateTotalAmount());
     }
@@ -142,9 +142,9 @@ class RewardTest extends TestCase
     {
         $now = new DateTimeImmutable();
 
-        $reward = new Reward([]);
-        $reward->earn(111, $now->modify('+1 minute'), PointStatus::open());
-        $reward->earn(111, $now->modify('+1 minute'), PointStatus::open());
+        $reward = (new Reward([]))
+            ->earn(111, $now->modify('+1 minute'), PointStatus::open())
+            ->earn(111, $now->modify('+1 minute'), PointStatus::open());
 
         $this->assertEquals(222, $reward->calculateTotalAmount());
     }
@@ -153,9 +153,9 @@ class RewardTest extends TestCase
     {
         $now = new DateTimeImmutable();
 
-        $reward = new Reward([]);
-        $reward->earn(333, $now->modify('+1 minute'), PointStatus::open());
-        $reward->earn(111, $now->modify('-1 minute'), PointStatus::open());
+        $reward = (new Reward([]))
+            ->earn(333, $now->modify('+1 minute'), PointStatus::open())
+            ->earn(111, $now->modify('-1 minute'), PointStatus::open());
 
         $this->assertEquals(333, $reward->calculateTotalAmount());
     }
@@ -164,9 +164,9 @@ class RewardTest extends TestCase
     {
         $now = new DateTimeImmutable();
 
-        $reward = new Reward([]);
-        $reward->earn(1000, $now->modify('+1 minute'), PointStatus::open());
-        $reward->spend(600);
+        $reward = (new Reward([]))
+            ->earn(1000, $now->modify('+1 minute'), PointStatus::open())
+            ->spend(600);
 
         $this->assertEquals(400, $reward->calculateTotalAmount());
     }
@@ -175,10 +175,10 @@ class RewardTest extends TestCase
     {
         $now = new DateTimeImmutable();
 
-        $reward = new Reward([]);
-        $reward->earn(500, $now->modify('+1 minute'), PointStatus::open());
-        $reward->earn(300, $now->modify('+1 minute'), PointStatus::open());
-        $reward->spend(700);
+        $reward = (new Reward([]))
+            ->earn(500, $now->modify('+1 minute'), PointStatus::open())
+            ->earn(300, $now->modify('+1 minute'), PointStatus::open())
+            ->spend(700);
 
         $this->assertEquals(100, $reward->calculateTotalAmount());
     }
@@ -187,11 +187,11 @@ class RewardTest extends TestCase
     {
         $now = new DateTimeImmutable();
 
-        $reward = new Reward([]);
-        $reward->earn(500, $now->modify('+1 minute'), PointStatus::open());
-        $reward->earn(300, $now->modify('+1 minute'), PointStatus::open());
-        $reward->earn(200, $now->modify('+1 minute'), PointStatus::draft());
-        $reward->spend(700);
+        $reward = (new Reward([]))
+            ->earn(500, $now->modify('+1 minute'), PointStatus::open())
+            ->earn(300, $now->modify('+1 minute'), PointStatus::open())
+            ->earn(200, $now->modify('+1 minute'), PointStatus::draft())
+            ->spend(700);
 
         $this->assertEquals(100, $reward->calculateTotalAmount());
     }

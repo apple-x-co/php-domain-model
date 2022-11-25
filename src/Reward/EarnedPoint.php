@@ -144,12 +144,13 @@ class EarnedPoint implements PointInterface
         return $this->remainingAmount > 0;
     }
 
-    public function useAmount(int $amount): void
+    public function useAmount(int $amount): self
     {
-        if ($this->remainingAmount < $amount) {
-            return;
+        $clone = clone $this;
+        if ($clone->remainingAmount >= $amount) {
+            $clone->remainingAmount -= $amount;
         }
 
-        $this->remainingAmount -= $amount;
+        return $clone;
     }
 }
