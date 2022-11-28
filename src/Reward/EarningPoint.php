@@ -154,4 +154,13 @@ class EarningPoint implements PointInterface
 
         return $clone;
     }
+
+    public function refund(string $reason): self
+    {
+        $clone = clone $this;
+        $clone->invalidationAt = new DateTimeImmutable();
+        $clone->invalidationReason = $reason;
+
+        return $clone;
+    }
 }

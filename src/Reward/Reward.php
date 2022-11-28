@@ -102,9 +102,45 @@ class Reward
 //    {
 //        // TODO: ポイント無効化
 //    }
-//
-//    public function refund(PointInterface $point): void
+
+//    // TODO: ポイント返却
+//    public function refund(PointInterface $point, string $reason): self
 //    {
-//        // TODO: ポイント戻し
+//        if ($point instanceof EarningPoint) {
+//            return $this->refundEarningPoint($point, $reason);
+//        }
+//
+//        if ($point instanceof SpendingPoint) {
+//            return $this->refundSpendingPoint($point);
+//        }
+//
+//        throw new PointInvalidTypeException();
+//    }
+//
+//    private function refundEarningPoint(EarningPoint $earningPoint, string $reason): self
+//    {
+//        $clone = clone $this;
+//
+//        foreach ($clone->points as &$point) {
+//            if ($point->getPointId() !== $earningPoint->getPointId()) {
+//                continue;
+//            }
+//
+//            if ($point->getInvalidationAt() !== null) {
+//                continue;
+//            }
+//
+//            if ($point instanceof EarningPoint) {
+//                $point = $point->refund($reason);
+//                break;
+//            }
+//        }
+//
+//        return $clone;
+//    }
+//
+//    private function refundSpendingPoint(SpendingPoint $spendingPoint): self
+//    {
+//        // 消費ポイントを戻す場合（例：購入時にポイントを使った）
 //    }
 }
