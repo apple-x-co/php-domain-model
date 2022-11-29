@@ -9,15 +9,16 @@ use PHPUnit\Framework\TestCase;
 
 class SpendingPointTest extends TestCase
 {
-    public function testAvailableFalse(): void
+    public function testSpending(): void
     {
-        $spendingPoint = new SpendingPoint(
-            UuidProvider::get(),
+        $spendingPoint = SpendingPoint::reconstruct(
             UuidProvider::get(),
             new DateTimeImmutable(),
             (new DateTimeImmutable())->modify('+1 year')->setTime(0, 0),
-            100,
-            PointStatus::open()
+            -100,
+            PointStatus::open(),
+            null,
+            null
         );
 
         $this->assertFalse($spendingPoint->isAvailable());

@@ -9,9 +9,6 @@ use DateTimeImmutable;
 class EarningPoint implements PointInterface
 {
     /** @var string */
-    private $transactionId;
-
-    /** @var string */
     private $pointId;
 
     /** @var DateTimeImmutable */
@@ -41,14 +38,12 @@ class EarningPoint implements PointInterface
      * @phpstan-param positive-int $amount
      */
     public function __construct(
-        string $transactionId,
         string $pointId,
         DateTimeImmutable $pointAt,
         ?DateTimeImmutable $expiresAt,
         int $amount,
         PointStatus $status
     ) {
-        $this->transactionId = $transactionId;
         $this->pointId = $pointId;
         $this->pointAt = $pointAt;
         $this->expiresAt = $expiresAt;
@@ -57,13 +52,20 @@ class EarningPoint implements PointInterface
         $this->remainingAmount = $amount;
     }
 
+    public function __clone()
+    {
+        $this->pointAt = clone $this->pointAt;
+        $this->expiresAt = $this->expiresAt === null ? null : clone $this->expiresAt;
+        $this->status = clone $this->status;
+        $this->invalidationAt = $this->invalidationAt === null ? null : clone $this->invalidationAt;
+    }
+
     /**
      * @param int                  $amount
      *
      * @phpstan-param positive-int $amount
      */
     public static function reconstruct(
-        string $transactionId,
         string $pointId,
         DateTimeImmutable $pointAt,
         ?DateTimeImmutable $expiresAt,
@@ -72,19 +74,13 @@ class EarningPoint implements PointInterface
         PointStatus $status,
         ?DateTimeImmutable $invalidationAt,
         ?string $invalidationReason
-    ): self
-    {
-        $earningPoint = new self($transactionId, $pointId, $pointAt, $expiresAt, $amount, $status);
+    ): self {
+        $earningPoint = new self($pointId, $pointAt, $expiresAt, $amount, $status);
         $earningPoint->remainingAmount = $remainingAmount;
         $earningPoint->invalidationAt = $invalidationAt;
         $earningPoint->invalidationReason = $invalidationReason;
 
         return $earningPoint;
-    }
-
-    public function getTransactionId(): string
-    {
-        return $this->transactionId;
     }
 
     public function getPointId(): string

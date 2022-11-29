@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Exception;
 
-class RewardSpendingOverException extends PhpRuntimeException
+class InvalidAmountTypeException extends PhpRuntimeException
 {
 }

@@ -9,9 +9,6 @@ use DateTimeImmutable;
 class SpendingPoint implements PointInterface
 {
     /** @var string */
-    private $transactionId;
-
-    /** @var string */
     private $pointId;
 
     /** @var DateTimeImmutable */
@@ -38,19 +35,25 @@ class SpendingPoint implements PointInterface
      * @phpstan-param negative-int $amount
      */
     public function __construct(
-        string $transactionId,
         string $pointId,
         DateTimeImmutable $pointAt,
         ?DateTimeImmutable $expiresAt,
         int $amount,
         PointStatus $status
     ) {
-        $this->transactionId = $transactionId;
         $this->pointId = $pointId;
         $this->pointAt = $pointAt;
         $this->expiresAt = $expiresAt;
         $this->amount = $amount;
         $this->status = $status;
+    }
+
+    public function __clone()
+    {
+        $this->pointAt = clone $this->pointAt;
+        $this->expiresAt = $this->expiresAt === null ? null : clone $this->expiresAt;
+        $this->status = clone $this->status;
+        $this->invalidationAt = $this->invalidationAt === null ? null : clone $this->invalidationAt;
     }
 
     /**
@@ -59,7 +62,6 @@ class SpendingPoint implements PointInterface
      * @phpstan-param negative-int $amount
      */
     public static function reconstruct(
-        string $transactionId,
         string $pointId,
         DateTimeImmutable $pointAt,
         ?DateTimeImmutable $expiresAt,
@@ -69,16 +71,11 @@ class SpendingPoint implements PointInterface
         ?string $invalidationReason
     ): self
     {
-        $spendingPoint = new self($transactionId, $pointId, $pointAt, $expiresAt, $amount, $status);
+        $spendingPoint = new self($pointId, $pointAt, $expiresAt, $amount, $status);
         $spendingPoint->invalidationAt = $invalidationAt;
         $spendingPoint->invalidationReason = $invalidationReason;
 
         return $spendingPoint;
-    }
-
-    public function getTransactionId(): string
-    {
-        return $this->transactionId;
     }
 
     public function getPointId(): string

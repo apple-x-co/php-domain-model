@@ -8,8 +8,6 @@ use DateTimeImmutable;
 
 interface PointInterface
 {
-    public function getTransactionId(): string;
-
     public function getPointId(): string;
 
     public function getPointAt(): DateTimeImmutable;

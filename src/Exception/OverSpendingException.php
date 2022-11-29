@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Exception;
 
-class PointInvalidTypeException extends PhpRuntimeException
+class OverSpendingException extends PhpRuntimeException
 {
 }
