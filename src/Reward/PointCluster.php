@@ -6,6 +6,7 @@ namespace Domain\Reward;
 
 use Domain\Exception\InvalidAmountTypeException;
 use Domain\Exception\InvalidPointTypeException;
+use function array_reduce;
 
 class PointCluster
 {
