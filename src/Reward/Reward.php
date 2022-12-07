@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Reward;
 
 use DateTimeImmutable;
+use Domain\Exception\InvalidPointTypeException;
 use Domain\Exception\OverSpendingException;
 
 class Reward
@@ -135,9 +136,9 @@ class Reward
         return $clone;
     }
 
+//    // TODO: ポイント無効化
 //    public function invalidate(PointInterface $point): void
 //    {
-//        // TODO: ポイント無効化
 //    }
 
 //    // TODO: ポイント返却
