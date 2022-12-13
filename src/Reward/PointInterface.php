@@ -25,4 +25,6 @@ interface PointInterface
     public function getInvalidationReason(): ?string;
 
     public function isAvailable(): bool;
+
+    public function refund(string $reason): PointInterface;
 }

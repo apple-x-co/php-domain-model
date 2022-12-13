@@ -122,4 +122,13 @@ class SpendingPoint implements PointInterface
     {
         return false;
     }
+
+    public function refund(string $reason): PointInterface
+    {
+        $clone = clone $this;
+        $clone->invalidationAt = new DateTimeImmutable();
+        $clone->invalidationReason = $reason;
+
+        return $clone;
+    }
 }

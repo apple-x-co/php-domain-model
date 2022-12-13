@@ -115,7 +115,13 @@ class PointCluster
      */
     public function changePoints(array $points): self
     {
+        $amount = 0;
+        foreach ($points as $point) {
+            $amount += $point->getAmount();
+        }
+
         $clone = clone $this;
+        $clone->amount = $amount;
         $clone->points = $points;
 
         return $clone;
