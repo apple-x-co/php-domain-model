@@ -241,18 +241,33 @@ class RewardTest extends TestCase
         $this->assertEquals(0, $reward->calculateRemainingAmount());
     }
 
+    public function testPointCluster(): void
+    {
+        $now = new DateTimeImmutable();
+        $transactionId = UuidProvider::get();
+
+        $reward = (new Reward())
+            ->earn($transactionId, 500, $now->modify('+1 minute'), PointStatus::open());
+        $pointClusters = $reward->getPointClusters();
+        $pointCluster = $pointClusters[0];
+
+        $this->assertEquals(500, $pointCluster->getAmount());
+    }
+
     public function testRefundEarning(): void
     {
         $now = new DateTimeImmutable();
         $transactionId1 = UuidProvider::get();
         $transactionId2 = UuidProvider::get();
+        $transactionId3 = UuidProvider::get();
 
         $reward = (new Reward())
             ->earn($transactionId1, 500, $now->modify('+1 minute'), PointStatus::open())
             ->earn($transactionId2, 300, $now->modify('+1 minute'), PointStatus::open())
+            ->earn($transactionId3, 200, $now->modify('+1 minute'), PointStatus::draft())
             ->refund($transactionId1, 'TEST');
 
-        $this->assertEquals(800, $reward->calculateTotalAmount());
+        $this->assertEquals(1000, $reward->calculateTotalAmount());
         $this->assertEquals(300, $reward->calculateRemainingAmount());
     }
 
@@ -269,5 +284,20 @@ class RewardTest extends TestCase
 
         $this->assertEquals(500, $reward->calculateTotalAmount());
         $this->assertEquals(500, $reward->calculateRemainingAmount());
+    }
+
+    public function testRefresh(): void
+    {
+        $now = new DateTimeImmutable();
+        $transactionId = UuidProvider::get();
+
+        $reward = (new Reward())
+            ->earn($transactionId, 500, $now->modify('+1 second'), PointStatus::open());
+
+        sleep(1);
+
+        $reward = $reward->refresh();
+
+        $this->assertEquals(0, $reward->calculateRemainingAmount());
     }
 }

@@ -26,5 +26,11 @@ interface PointInterface
 
     public function isAvailable(): bool;
 
+    public function isExpired(): bool;
+
+    public function isInvalid(): bool;
+
     public function refund(string $reason): PointInterface;
+
+    public function expires(): PointInterface;
 }

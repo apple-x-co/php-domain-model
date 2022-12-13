@@ -43,4 +43,37 @@ class PointClusterTest extends TestCase
 
         $this->assertEquals(100, $pointCluster->calculateRemainingAmount());
     }
+
+    public function testChangePoint(): void
+    {
+        $pointCluster = PointCluster::reconstruct(
+            UuidProvider::get(),
+            100,
+            PointClusterType::earning(),
+            [
+                EarningPoint::reconstruct(
+                    UuidProvider::get(),
+                    new DateTimeImmutable(),
+                    (new DateTimeImmutable())->modify('+1 year')->setTime(0, 0),
+                    100,
+                    100,
+                    PointStatus::open(),
+                    null,
+                    null
+                )
+            ]
+        );
+
+        $pointCluster = $pointCluster->changePoints([
+            new EarningPoint(
+                UuidProvider::get(),
+                new DateTimeImmutable(),
+                (new DateTimeImmutable())->modify('1 minute'),
+                300,
+                PointStatus::open()
+            ),
+        ]);
+
+        $this->assertEquals(300, $pointCluster->getAmount());
+    }
 }

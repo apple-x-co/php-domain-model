@@ -126,4 +126,28 @@ class PointCluster
 
         return $clone;
     }
+
+    public function refresh(): self
+    {
+        $amount = 0;
+        $newPoints = [];
+
+        foreach ($this->points as $point) {
+            $newPoint = clone $point;
+
+            if (! $newPoint->isInvalid() && $newPoint->isExpired()) {
+                $newPoint = $newPoint->expires();
+            }
+
+            $amount += $newPoint->getAmount();
+
+            $newPoints[] = $newPoint;
+        }
+
+        $clone = clone $this;
+        $clone->amount = $amount;
+        $clone->points = $newPoints;
+
+        return $clone;
+    }
 }

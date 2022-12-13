@@ -123,11 +123,32 @@ class SpendingPoint implements PointInterface
         return false;
     }
 
+    public function isInvalid(): bool
+    {
+        return $this->invalidationAt !== null;
+    }
+
+    public function isExpired(): bool
+    {
+        $now = new DateTimeImmutable();
+
+        return $this->expiresAt !== null && $now > $this->expiresAt;
+    }
+
     public function refund(string $reason): PointInterface
     {
         $clone = clone $this;
         $clone->invalidationAt = new DateTimeImmutable();
         $clone->invalidationReason = $reason;
+
+        return $clone;
+    }
+
+    public function expires(): PointInterface
+    {
+        $clone = clone $this;
+        $clone->invalidationAt = new DateTimeImmutable();
+        $clone->invalidationReason = 'expired';
 
         return $clone;
     }

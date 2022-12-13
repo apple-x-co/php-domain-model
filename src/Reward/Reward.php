@@ -194,4 +194,18 @@ class Reward
 
         return $pointCluster->changePoints(array_merge($points, $newPoints));
     }
+
+    public function refresh(): self
+    {
+        $newPointClusters = [];
+
+        foreach ($this->pointClusters as $pointCluster) {
+            $newPointClusters[] = $pointCluster->refresh();
+        }
+
+        $clone = clone $this;
+        $clone->pointClusters = $newPointClusters;
+
+        return $clone;
+    }
 }

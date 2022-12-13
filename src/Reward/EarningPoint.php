@@ -129,8 +129,7 @@ class EarningPoint implements PointInterface
             return false;
         }
 
-        $now = new DateTimeImmutable();
-        if ($this->expiresAt !== null && $now > $this->expiresAt) {
+        if ($this->isExpired()) {
             return false;
         }
 
@@ -139,6 +138,18 @@ class EarningPoint implements PointInterface
         }
 
         return $this->remainingAmount > 0;
+    }
+
+    public function isInvalid(): bool
+    {
+        return $this->invalidationAt !== null;
+    }
+
+    public function isExpired(): bool
+    {
+        $now = new DateTimeImmutable();
+
+        return $this->expiresAt !== null && $now > $this->expiresAt;
     }
 
     public function useAmount(int $amount): self
@@ -156,6 +167,15 @@ class EarningPoint implements PointInterface
         $clone = clone $this;
         $clone->invalidationAt = new DateTimeImmutable();
         $clone->invalidationReason = $reason;
+
+        return $clone;
+    }
+
+    public function expires(): PointInterface
+    {
+        $clone = clone $this;
+        $clone->invalidationAt = new DateTimeImmutable();
+        $clone->invalidationReason = 'expired';
 
         return $clone;
     }
