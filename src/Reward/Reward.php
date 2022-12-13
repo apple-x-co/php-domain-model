@@ -136,16 +136,9 @@ class Reward
         return $clone;
     }
 
-//    // TODO: ポイント無効化
-//    public function invalidate(PointInterface $point): void
-//    {
-//    }
-
     public function refund(string $transactionId, string $reason): self
     {
         $newPointClusters = [];
-        /** @var array<string, int> $returnPoints */
-        $returnPoints = [];
 
         foreach ($this->pointClusters as $pointCluster) {
             if ($pointCluster->getTransactionId() !== $transactionId) {
