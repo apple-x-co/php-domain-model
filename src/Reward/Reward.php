@@ -18,10 +18,10 @@ class Reward
         $this->pointClusters = $pointClusters;
     }
 
-    public static function reconstruct(array $points): self
-    {
-        return new self($points);
-    }
+//    public static function reconstruct(array $points): self
+//    {
+//        return new self($points);
+//    }
 
     public function getPointClusters(): array
     {
@@ -54,7 +54,6 @@ class Reward
         $clone->pointClusters[] = new PointCluster(
             $transactionId,
             $amount,
-            PointClusterType::earning(),
             [
                 new EarningPoint(
                     UuidProvider::get(),
@@ -76,19 +75,11 @@ class Reward
             throw new OverSpendingException();
         }
 
-        $earningPointCluster = PointClusterType::earning();
-
         $spendingAmount = $amount;
         $newSpendingPoints = [];
         $newPointClusters = [];
 
         foreach ($this->pointClusters as $pointCluster) {
-            if (! $pointCluster->getType()->isSame($earningPointCluster)) {
-                $newPointClusters[] = clone $pointCluster;
-
-                continue;
-            }
-
             $remainingAmount = $pointCluster->calculateRemainingAmount();
             if ($remainingAmount <= 0) {
                 $newPointClusters[] = clone $pointCluster;
@@ -125,7 +116,6 @@ class Reward
             $newPointClusters[] = new PointCluster(
                 $transactionId,
                 $amount * -1,
-                PointClusterType::spending(),
                 $newSpendingPoints
             );
         }
@@ -147,52 +137,29 @@ class Reward
                 continue;
             }
 
-            if ($pointCluster->getType()->isSame(PointClusterType::earning())) {
-                $newPointClusters[] = $this->refundEarning($pointCluster, $reason);
+            $newPoints = [];
+            $points = $pointCluster->getPoints();
+            foreach ($points as &$point) {
+                $point = $point->refund($reason);
+                if ($point instanceof SpendingPoint) {
+                    $newPoints[] = new EarningPoint(
+                        UuidProvider::get(),
+                        $point->getPointAt(),
+                        $point->getExpiresAt(),
+                        $point->getAmount() * -1,
+                        $point->getStatus()
+                    );
+                }
             }
+            unset($point);
 
-            if ($pointCluster->getType()->isSame(PointClusterType::spending())) {
-                $newPointClusters[] = $this->refundSpending($pointCluster, $reason);
-            }
+            $newPointClusters[] = $pointCluster->changePoints(array_merge($points, $newPoints));
         }
 
         $clone = clone $this;
         $clone->pointClusters = $newPointClusters;
 
         return $clone;
-    }
-
-    private function refundEarning(PointCluster $pointCluster, string $reason): PointCluster
-    {
-        $points = $pointCluster->getPoints();
-        foreach ($points as &$point) {
-            if ($point instanceof EarningPoint) {
-                $point = $point->refund($reason);
-            }
-        }
-
-        return $pointCluster->changePoints($points);
-    }
-
-    private function refundSpending(PointCluster $pointCluster, string $reason): PointCluster
-    {
-        $newPoints = [];
-
-        $points = $pointCluster->getPoints();
-        foreach ($points as &$point) {
-            if ($point instanceof SpendingPoint) {
-                $point = $point->refund($reason);
-                $newPoints[] = new EarningPoint(
-                    UuidProvider::get(),
-                    $point->getPointAt(),
-                    $point->getExpiresAt(),
-                    $point->getAmount() * -1,
-                    $point->getStatus()
-                );
-            }
-        }
-
-        return $pointCluster->changePoints(array_merge($points, $newPoints));
     }
 
     public function refresh(): self

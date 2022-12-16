@@ -24,7 +24,6 @@ class RewardTest extends TestCase
             new PointCluster(
                 UuidProvider::get(),
                 100,
-                PointClusterType::earning(),
                 [
                     new EarningPoint(
                         UuidProvider::get(),
@@ -47,7 +46,6 @@ class RewardTest extends TestCase
             new PointCluster(
                 UuidProvider::get(),
                 150,
-                PointClusterType::earning(),
                 [
                     new EarningPoint(
                         UuidProvider::get(),
@@ -78,7 +76,6 @@ class RewardTest extends TestCase
             new PointCluster(
                 UuidProvider::get(),
                 200,
-                PointClusterType::earning(),
                 [
                     new EarningPoint(
                         UuidProvider::get(),
@@ -92,7 +89,6 @@ class RewardTest extends TestCase
             new PointCluster(
                 UuidProvider::get(),
                 100,
-                PointClusterType::earning(),
                 [
                     new EarningPoint(
                         UuidProvider::get(),
@@ -123,7 +119,6 @@ class RewardTest extends TestCase
             new PointCluster(
                 UuidProvider::get(),
                 200,
-                PointClusterType::earning(),
                 [
                     new EarningPoint(
                         UuidProvider::get(),
@@ -137,7 +132,6 @@ class RewardTest extends TestCase
             new PointCluster(
                 UuidProvider::get(),
                 100,
-                PointClusterType::earning(),
                 [
                     new EarningPoint(
                         UuidProvider::get(),

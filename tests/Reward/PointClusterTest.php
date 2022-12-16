@@ -14,7 +14,6 @@ class PointClusterTest extends TestCase
         $pointCluster = PointCluster::reconstruct(
             UuidProvider::get(),
             0,
-            PointClusterType::earning(),
             []
         );
 
@@ -26,7 +25,6 @@ class PointClusterTest extends TestCase
         $pointCluster = PointCluster::reconstruct(
             UuidProvider::get(),
             100,
-            PointClusterType::earning(),
             [
                 EarningPoint::reconstruct(
                     UuidProvider::get(),
@@ -49,7 +47,6 @@ class PointClusterTest extends TestCase
         $pointCluster = PointCluster::reconstruct(
             UuidProvider::get(),
             100,
-            PointClusterType::earning(),
             [
                 EarningPoint::reconstruct(
                     UuidProvider::get(),

@@ -26,13 +26,13 @@ class PointStatus implements ValueObjectInterface
         return self::fromPrimitive(self::OPEN);
     }
 
-    public static function archived(): self
-    {
-        return self::fromPrimitive(self::ARCHIVED);
-    }
-
-    public static function CANCELED(): self
-    {
-        return self::fromPrimitive(self::CANCELED);
-    }
+//    public static function archived(): self
+//    {
+//        return self::fromPrimitive(self::ARCHIVED);
+//    }
+//
+//    public static function canceled(): self
+//    {
+//        return self::fromPrimitive(self::CANCELED);
+//    }
 }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Reward;
 
-use Domain\Exception\InvalidAmountTypeException;
-use Domain\Exception\InvalidPointTypeException;
 use function array_reduce;
 
 class PointCluster
@@ -16,23 +14,18 @@ class PointCluster
     /** @var int */
     private $amount;
 
-    /** @var PointClusterType */
-    private $type;
-
     /** @var array<PointInterface> */
     private $points;
 
-    public function __construct(string $transactionId, int $amount, PointClusterType $type, array $points)
+    public function __construct(string $transactionId, int $amount, array $points)
     {
         $this->transactionId = $transactionId;
         $this->amount = $amount;
-        $this->type = $type;
         $this->points = $points;
     }
 
     public function __clone()
     {
-        $this->type = clone $this->type;
         $this->points = array_reduce($this->points, static function (array $carry, PointInterface $item) {
             $carry[] = clone $item;
 
@@ -40,30 +33,9 @@ class PointCluster
         }, []);
     }
 
-    public static function reconstruct(string $transactionId, int $amount, PointClusterType $type, array $points): self
+    public static function reconstruct(string $transactionId, int $amount, array $points): self
     {
-        $earningPointCluster = PointClusterType::earning();
-        $spendingPointCluster = PointClusterType::spending();
-
-        foreach ($points as $point) {
-            if (($point instanceof EarningPoint) === false && $type->isSame($earningPointCluster)) {
-                throw new InvalidPointTypeException();
-            }
-
-            if (($point instanceof SpendingPoint) === false && $type->isSame($spendingPointCluster)) {
-                throw new InvalidPointTypeException();
-            }
-        }
-
-        if ($amount < 0 && $type->isSame($earningPointCluster)) {
-            throw new InvalidAmountTypeException();
-        }
-
-        if ($amount > 0 && $type->isSame($spendingPointCluster)) {
-            throw new InvalidAmountTypeException();
-        }
-
-        return new self($transactionId, $amount, $type, $points);
+        return new self($transactionId, $amount, $points);
     }
 
     public function getTransactionId(): string
@@ -74,11 +46,6 @@ class PointCluster
     public function getAmount(): int
     {
         return $this->amount;
-    }
-
-    public function getType(): PointClusterType
-    {
-        return $this->type;
     }
 
     public function getPoints(): array

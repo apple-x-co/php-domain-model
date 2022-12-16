@@ -30,8 +30,6 @@ class SpendingPoint implements PointInterface
     private $invalidationReason;
 
     /**
-     * @param int                  $amount
-     *
      * @phpstan-param negative-int $amount
      */
     public function __construct(
@@ -57,8 +55,6 @@ class SpendingPoint implements PointInterface
     }
 
     /**
-     * @param int                  $amount
-     *
      * @phpstan-param negative-int $amount
      */
     public static function reconstruct(

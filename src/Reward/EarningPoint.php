@@ -33,8 +33,6 @@ class EarningPoint implements PointInterface
     private $invalidationReason;
 
     /**
-     * @param int                  $amount
-     *
      * @phpstan-param positive-int $amount
      */
     public function __construct(
@@ -61,8 +59,6 @@ class EarningPoint implements PointInterface
     }
 
     /**
-     * @param int                  $amount
-     *
      * @phpstan-param positive-int $amount
      */
     public static function reconstruct(
